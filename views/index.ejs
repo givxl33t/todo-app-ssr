@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1>Todo</h1>
+    <p>List your work that need to be done on time.</p>
+  </header>
+
+  <ul class="todo-list">
+    <% filteredTodos.forEach(function(todo) { %>
+      <li class="list-item">
+
+        <label class="list-item-label">
+          <form action="/toggle-todo/<%= todo.id %>" method="POST">
+            <input type="hidden" name="filter" value="<%= filter %>">
+            <input type="checkbox" class="list-item-checkbox" <% if(todo.isCompleted) { %> checked <% } %> onchange="this.form.submit()">
+            <span class="<%= todo.isCompleted ? 'completed' : '' %>"><%= todo.name %></span>
+          </form>
+        </label>
+
+        <div class="todo-actions">
+          <form action="/edit-todo/<%= todo.id %>" method="GET" style="display: inline;">
+            <input type="hidden" name="filter" value="<%= filter %>">
+            <button type="submit">Edit</button>
+          </form>
+
+          <form action="/delete-todo/<%= todo.id %>" method="POST" style="display: inline;">
+            <input type="hidden" name="filter" value="<%= filter %>">
+            <button type="submit">Delete</button>
+          </form>
+        </div>
+      </li>
+    <% }); %>
+  </ul>
+
+  <div class="filter-section">
+    <form action="/" method="GET" style="display: inline;">
+      <button type="submit" name="filter" value="all" class="<%= filter === 'all' ? 'active-filter' : '' %>">All Todo</button>
+    </form>
+    <form action="/" method="GET" style="display: inline;">
+      <button type="submit" name="filter" value="active" class="<%= filter === 'active' ? 'active-filter' : '' %>">Active Todo</button>
+    </form>
+    <form action="/" method="GET" style="display: inline;">
+      <button type="submit" name="filter" value="completed" class="<%= filter === 'completed' ? 'active-filter' : '' %>">Completed Todo</button>
+    </form>
+  </div>
+
+  <form class="todo-form" action="<%= selectedTodo ? `/edit-todo/${selectedTodo.id}` : '/add-todo' %>" method="POST">
+    <input type="text" name="todoName" id="todo-input" placeholder="Add new todo" required value="<%= selectedTodo ? selectedTodo.name : '' %>">
+    <input type="hidden" name="filter" value="<%= filter %>">
+    <button type="submit"><%= selectedTodo ? 'Update' : 'Add Todo' %></button>
+  </form>
+</body>
+</html>
