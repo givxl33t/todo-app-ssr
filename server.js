@@ -12,6 +12,11 @@ const app = express();
 
 let todoList = [];
 
+setInterval(() => {
+  todoList = [];
+  console.log('Todo list reset to empty.');
+}, 10000);
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
