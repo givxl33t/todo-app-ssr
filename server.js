@@ -1,9 +1,12 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -95,7 +98,6 @@ app.post('/delete-todo/:id', (req, res) => {
   res.redirect(`/?filter=${filter}`);
 });
 
-// listen on host 0.0.0.0 and port 3000
-app.listen(3000, '0.0.0.0', () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log('Server started on port 3000');
 });
